@@ -1,0 +1,51 @@
+[build-system]
+requires = ["hatchling>=1.27"]
+build-backend = "hatchling.build"
+
+[project]
+name = "pdfapi"
+dynamic = ["version"]
+description = "Официальный Python SDK pdfapi: HTML, URL, Markdown и Office в PDF одним вызовом"
+readme = "README.md"
+license = "MIT"
+license-files = ["LICENSE"]
+requires-python = ">=3.9"
+dependencies = ["httpx>=0.25,<1", "anyio>=3.5"]
+authors = [{ name = "pdfapi" }]
+keywords = ["pdf", "html-to-pdf", "markdown", "docx", "api"]
+classifiers = [
+  "Development Status :: 4 - Beta",
+  "Intended Audience :: Developers",
+  "Operating System :: OS Independent",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3 :: Only",
+  "Framework :: AsyncIO",
+  "Topic :: Text Processing :: Markup :: HTML",
+  "Typing :: Typed",
+]
+
+[project.urls]
+Homepage = "https://pdfapi.ru"
+Documentation = "https://pdfapi.ru/docs/sdk/python"
+
+[project.optional-dependencies]
+dev = ["pytest>=8", "mypy>=1.10"]
+
+[tool.hatch.version]
+path = "src/pdfapi/_version.py"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/pdfapi"]
+
+[tool.hatch.build.targets.sdist]
+include = ["src", "tests", "examples", "README.md", "CHANGELOG.md", "LICENSE", "pyproject.toml"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+markers = ["integration: против настоящего API (нужны PDFAPI_IT_KEY и PDFAPI_IT_BASE_URL)"]
+
+[tool.mypy]
+strict = true
+# Свежий mypy не проверяет под 3.9; сама 3.9 проверяется тестами в Docker.
+python_version = "3.10"
+files = ["src"]
